@@ -8,6 +8,7 @@ version: '3'
 services:
   server:
     image: redash/redash:6.0.0.b8537
+    container_name: redash_server_1
     command: server
     depends_on:
       - postgres
@@ -23,6 +24,7 @@ services:
       REDASH_WEB_WORKERS: 4
   worker:
     image: redash/redash:6.0.0.b8537
+    container_name: redash_worker_1
     command: scheduler
     environment:
       PYTHONUNBUFFERED: 0
@@ -34,12 +36,15 @@ services:
       REDASH_HOST: "http://localhost"
   redis:
     image: redis:3-alpine
+    container_name: redash_redis_1
   postgres:
     image: postgres:9.5-alpine
+    container_name: redash_postgres_1
     # volumes:
     #   - /opt/postgres-data:/var/lib/postgresql/data
   nginx:
     image: redash/nginx:latest
+    container_name: redash_nginx_1
     ports:
       - "80:80"
     depends_on:
@@ -48,6 +53,7 @@ services:
       - server:redash
   mysql:
     image: sumito/mysql5.7
+    container_name: mysql_1
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       TZ: Japan
